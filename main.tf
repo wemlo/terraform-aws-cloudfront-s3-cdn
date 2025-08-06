@@ -133,7 +133,7 @@ resource "random_password" "referer" {
 data "aws_iam_policy_document" "s3_origin" {
   count = local.s3_origin_enabled ? 1 : 0
 
-  override_json = local.override_policy
+  override_policy_documents = [local.override_policy]
 
   statement {
     sid = "S3GetObjectForCloudFront"
@@ -163,7 +163,7 @@ data "aws_iam_policy_document" "s3_origin" {
 data "aws_iam_policy_document" "s3_website_origin" {
   count = local.website_enabled ? 1 : 0
 
-  override_json = local.override_policy
+  override_policy_documents = [local.override_policy]
 
   statement {
     sid = "S3GetObjectForCloudFront"
@@ -360,7 +360,7 @@ resource "time_sleep" "wait_for_aws_s3_bucket_settings" {
 
 module "logs" {
   source                   = "cloudposse/s3-log-storage/aws"
-  version                  = "1.3.1"
+  version                  = "1.4.2"
   enabled                  = local.create_cf_log_bucket
   attributes               = var.extra_logs_attributes
   lifecycle_prefix         = local.cloudfront_access_log_prefix
